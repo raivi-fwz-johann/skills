@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI协作验证阶段"
+  short_description: "按功能小步验证结果，由 AI 汇总证据并由人工确认验收。"
+  default_prompt: "使用 $ai-collaborative-verification-phase 按功能小步验证结果，由 AI 汇总证据并与人工确认验收。"

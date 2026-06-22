@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI协作画图阶段"
+  short_description: "组织图示阶段并复用现有绘图 skills，确保图示先由 AI 草拟再人工确认。"
+  default_prompt: "使用 $ai-collaborative-drawing-phase 选择图类型、准备绘图输入，并在进入实现前与人工确认图示。"

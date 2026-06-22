@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI协作开发"
+  short_description: "总控 AI 协作开发流程，导航设计、画图、实现、检视与验证阶段。"
+  default_prompt: "使用 $ai-collaborative-development 按设计、画图、实现、检视、验证流程推进软件开发任务，并在关键节点执行人工确认检查点。"

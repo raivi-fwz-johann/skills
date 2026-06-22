@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI协作检视阶段"
+  short_description: "先由 AI 初检实现结果，再由人工复检并决定是否放行验证。"
+  default_prompt: "使用 $ai-collaborative-review-phase 执行 AI 初检，整理问题清单，并由人工复检决定是否放行验证。"

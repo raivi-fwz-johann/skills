@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI协作实现阶段"
+  short_description: "按功能小步推进实现，由 AI 主导编码并由人工确认边界与放行。"
+  default_prompt: "使用 $ai-collaborative-implementation-phase 按功能小步推进实现，由 AI 主导编码并在关键节点执行人工确认。"
