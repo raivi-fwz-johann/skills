@@ -1,0 +1,45 @@
+@startuml
+' 全局样式配置
+skinparam ParticipantPadding 20
+skinparam BoxPadding 10
+autonumber
+
+title 跨模块时序图示例 - 访存信使生命周期 (现状)
+
+participant "src/core/DetailBE" as BE
+participant "src/uncore/cache\n(DCache)" as DCache
+participant "src/uncore/CohCache\n(MemAccessInfo)" as MemAcc
+participant "src/uncore/cache\n(L2Cache)" as L2
+
+BE -> DCache : triggerLoad(addr)
+activate DCache
+
+DCache -> DCache : Lookup CacheBlock
+
+alt L1 Hit
+    DCache --> BE : return Hit
+else L1 Miss
+    DCache -> MemAcc ** : create(addr, ReadReq)
+    activate MemAcc
+    MemAcc --> DCache : 返回指针
+    
+    DCache -> L2 : sendRequest(MemAcc)
+    activate L2
+    
+    L2 -> L2 : Arbitrate & Lookup
+    L2 --> DCache : return Response(MemAcc)
+    deactivate L2
+    
+    DCache -> MemAcc !! : destroy / mark resolved
+    deactivate MemAcc
+    
+    DCache --> BE : return Data (Miss resolved)
+end
+
+deactivate DCache
+
+note right of MemAcc
+  MemAcc 当前位于 uncore 目录下，
+  被各个 cache 模块高度依赖并流转。
+end note
+@enduml

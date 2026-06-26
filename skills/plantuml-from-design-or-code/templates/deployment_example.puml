@@ -1,0 +1,35 @@
+@startuml
+' 全局样式配置
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 60
+
+title 部署图示例 - RISC-V 模拟器运行环境
+
+node "Linux 开发/测试机 (x86_64)" as HostNode {
+    
+    node "Docker 容器 (编译/运行环境)" as DockerEnv {
+        
+        artifact "model_main (可执行文件)" as ModelExec
+        artifact "libmavis.so (动态库)" as MavisLib
+        
+        folder "arches/ (配置归档仓)" as ConfigDir {
+            file "rv64gc_core.json" as ConfigFile
+        }
+        
+        folder "运行输出 (Logs)" as OutputDir {
+            file "itemwave.txt"
+            file "pipeview.log"
+        }
+        
+        ModelExec .down.> MavisLib : 运行时加载
+        ModelExec .down.> ConfigFile : 读取拓扑与参数配置
+        ModelExec .right.> OutputDir : 写入仿真观测记录
+    }
+}
+
+note right of DockerEnv
+  部署图侧重展示编译后的二进制产物
+  在物理机器或容器中的运行形态与文件 IO 关系。
+end note
+@enduml

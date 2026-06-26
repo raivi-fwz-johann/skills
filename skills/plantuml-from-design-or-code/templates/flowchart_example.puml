@@ -1,0 +1,41 @@
+@startuml
+' 全局样式配置
+skinparam linetype ortho
+skinparam ConditionEndStyle hline
+
+title 流程图示例 - CoherentMSHR 审批流 (当前实现)
+
+start
+
+:接收到新的 MemAccessInfo 请求;
+:解析物理地址 (PAddr);
+
+if (是否存在完全匹配的已分配条目?) then (是)
+  :增加 Secondary Miss 记录;
+  :合并请求 (Merge);
+  stop
+else (否)
+  if (Allocated Queue 是否已满?) then (是)
+    :触发反压 (Backpressure);
+    :挂起请求，等待 MSHR 释放;
+    stop
+  else (否)
+    if (是否存在地址哈希冲突 / Alias?) then (是)
+      :将请求置入 Conflict Queue;
+      :等待对应旧条目完成;
+      stop
+    else (否)
+      :在 Allocated Queue 中分配新条目;
+      :将请求标记为 MarkSent;
+      :向下一级缓存发送总线请求;
+    endif
+  endif
+endif
+
+stop
+
+note right
+  展示位于 src/uncore/cache/queues 下
+  的 MSHR 队列当前真实的拦截判定流程。
+end note
+@enduml

@@ -1,0 +1,47 @@
+@startuml
+' 全局样式配置
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 60
+
+title 核心模块类图示例 - 当前 CacheBlock 特化层次
+
+package "src.funcmodel.resources" {
+    class ReplacementManager {
+        + allocateWay()
+        + updateHit()
+    }
+    
+    class "CacheBlock<T>" as CacheBlock {
+        - valid: bool
+        - tag: uint64_t
+        - data: T
+        + getHitWay(addr)
+        + replace(addr)
+    }
+    
+    CacheBlock *-- ReplacementManager : 组合 (管理替换策略)
+}
+
+package "src.uncore.cache" {
+    class "L2Cache" as L2Cache {
+        - cache_data: CacheBlock<CoherentLine>
+        + processSnoop(addr)
+    }
+}
+
+package "src.core.DetailFE" {
+    class "ICache" as ICache {
+        - cache_data: CacheBlock<InstLine>
+        + fetch(paddr)
+    }
+}
+
+ICache ..> CacheBlock : 跨目录特化 T 为 InstLine
+L2Cache ..> CacheBlock : 跨目录特化 T 为 CoherentLine
+
+note bottom of CacheBlock
+  展示底层资源在当前 src/ 目录深层嵌套下
+  是如何被不同时序模型跨包引用的。
+end note
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+' 全局样式配置
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 60
+
+title 产物构建与依赖图示例 - 当前工程依赖现状
+
+package "主执行产物" {
+    [model_main] <<executable>> as ModelMain
+}
+
+package "内部库 (Internal Libs)" {
+    [lib_simulation] <<static lib>> as LibSim
+    [lib_core] <<static lib>> as LibCore
+    [lib_uncore] <<static lib>> as LibUncore
+    [lib_funcmodel] <<static lib>> as LibFunc
+    [lib_basic] <<static lib>> as LibBasic
+    [lib_utility] <<static lib>> as LibUtil
+}
+
+package "独立子项目 (Submodules)" {
+    [libmavis] <<static lib>> as LibMavis
+}
+
+' 依赖连线
+ModelMain -down-> LibSim : 编译时链接
+LibSim -down-> LibCore : 编译时链接
+LibSim -down-> LibUncore : 编译时链接
+
+LibCore -down-> LibFunc : 编译时链接
+LibCore -down-> LibBasic : 编译时链接
+LibCore -down-> LibUtil : 编译时链接
+
+LibUncore -down-> LibFunc : 编译时链接
+LibUncore -down-> LibBasic : 编译时链接
+
+LibFunc -down-> LibMavis : 编译时链接
+
+note right of LibCore
+  揭示当前代码库各个 CMake Target
+  之间复杂的编译期链接关系。
+end note
+@enduml

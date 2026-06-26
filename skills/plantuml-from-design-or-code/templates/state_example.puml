@@ -1,0 +1,60 @@
+@startuml
+' 全局样式配置
+skinparam linetype ortho
+
+title 状态图示例 - MOESI 缓存一致性协议
+
+[*] --> Invalid : L1 Cache Miss (Allocated)
+
+state Invalid {
+}
+
+Invalid --> Exclusive : Read Miss
+note on link
+  总线返回无其他共享者
+end note
+
+Invalid --> Shared : Read Miss
+note on link
+  总线返回存在共享者
+end note
+
+state Shared {
+  Shared : 存在于多个核心
+  Shared : 只读状态
+}
+
+Shared --> Modified : Write Hit
+note on link
+  本核心发起写入并广播 Invalidate
+end note
+
+Exclusive --> Modified : Write Hit
+note on link: 无需广播
+
+state Modified {
+  Modified : 本核心独占且已修改
+  Modified : 脏数据 (Dirty)
+}
+
+Modified --> Owned : Read Snooping
+note on link
+  其他核心发起读取，
+  本核心提供数据并转移状态
+end note
+
+Exclusive --> Shared : Read Snooping
+
+state Owned {
+  Owned : 系统内数据最新者
+  Owned : 负责后续写回内存
+}
+
+Modified --> Invalid : 被 Eviction 替换 (Writeback)
+Shared --> Invalid : 被 Eviction 替换 (Drop)
+
+note bottom of Owned
+  这是位于 src/uncore/CohCache 下
+  典型的一致性协议状态机流转。
+end note
+@enduml

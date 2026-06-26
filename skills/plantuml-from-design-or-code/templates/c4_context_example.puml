@@ -1,0 +1,46 @@
+@startuml
+' 全局样式配置
+skinparam linetype ortho
+skinparam nodesep 60
+skinparam ranksep 60
+
+title C4 架构容器图示例 - 当前 RISC-V 模拟器宏观架构
+
+actor "开发与验证人员" as Developer
+
+package "Model Simulator (src/)" {
+    [src/simulation (仿真框架)] as SimApp
+    
+    [src/core (核心时序)] as Core
+    [src/uncore (非核心时序)] as Uncore
+    [src/funcmodel (功能模型库)] as FuncModel
+    [src/basic (基础数据结构)] as Basic
+    [src/utility (公共工具与日志)] as Utility
+}
+
+[mavis (外部译码库)] as Mavis
+
+Developer -down-> SimApp : 发起任务
+
+SimApp -down-> Core : 驱动时钟
+note on link: 驱动前端/后端时钟
+
+SimApp -down-> Uncore : 驱动时钟
+note on link: 驱动 Cache/NoC 时钟
+
+SimApp -down-> Mavis : 挂载译码
+
+Core -down-> FuncModel : 调用功能状态
+Uncore -down-> FuncModel : 调用 Cache 功能
+
+Core -down-> Basic : 流转 Inst
+Uncore -down-> Basic : 流转 MemAccessInfo
+
+Core -right-> Utility : 调用插件
+note on link: 注入日志输出与观测插件
+
+note right of SimApp
+  展示当前 src/ 目录下各个核心大模块
+  之间错综复杂的真实调用与依赖关系。
+end note
+@enduml
