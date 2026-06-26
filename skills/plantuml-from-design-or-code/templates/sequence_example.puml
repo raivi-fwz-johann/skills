@@ -4,7 +4,7 @@ skinparam ParticipantPadding 20
 skinparam BoxPadding 10
 autonumber
 
-title 跨模块时序图示例 - 访存信使生命周期 (现状)
+title 跨模块序列图示例 - 访存信使生命周期 (现状)
 
 participant "src/core/DetailBE" as BE
 participant "src/uncore/cache\n(DCache)" as DCache

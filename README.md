@@ -27,6 +27,7 @@ skills/ (仓库根目录)
     │
     └── plantuml-from-design-or-code/          # PlantUML 绘图 skill
         ├── SKILL.md
+        ├── templates/                         # RISC-V 定制化绘图模板库
         ├── agents/
         │   └── openai.yaml
         └── references/
@@ -53,7 +54,8 @@ skills/ (仓库根目录)
 **定位**：专用绘图技能，根据设计文档、源码或两者结合生成 PlantUML 图示。
 
 **核心特性**：
-- 支持类图、活动图、时序图等
+- 支持 C4 架构图、类图、流程图、活动图、序列图、状态图、波形图(时序图)、部署图与产物依赖图
+- 内置针对 RISC-V C++ 模拟器深层架构定制的高质量模板库
 - 事实来源策略：design-doc / source-code / hybrid
 - 描述性文字默认中文，代码标识符保持原名
 

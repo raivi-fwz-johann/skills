@@ -1,0 +1,32 @@
+@startuml
+' 全局样式配置
+skinparam linetype ortho
+
+title 活动图示例 - RISC-V 指令生命周期流水线
+
+|前端 (src/core/DetailFE)|
+start
+:获取指令 (Fetch);
+fork
+  :解析操作码 (Decode);
+fork again
+  :分支预测 (BPU);
+end fork
+:生成 Inst 结构体;
+
+|后端 (src/core/DetailBE)|
+:重命名并分配 ROB;
+:发射到 Reservation Station (Issue);
+:执行 ALU 或 访存 (Execute);
+
+|提交 (Commit/Retire)|
+:指令退休 (Retire);
+:更新架构状态;
+
+stop
+
+note right
+  活动图 (Activity Diagram) 侧重于
+  带有泳道角色与并行分叉的业务工作流。
+end note
+@enduml
