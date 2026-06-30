@@ -10,11 +10,11 @@ description: 按功能小步执行代码实现。
 
 [准入条件]
 - 设计与画图阶段已完成。
-- 已加载 `TASK_STATE.md` 中对应的目标任务区块。
+- 已加载 `ai-task/TASK_STATE.md` 中对应的目标任务区块。
 
 [退出条件]
 - 步长 N 编码完成。配套测试骨架已创建。
-- 更新 `TASK_STATE.md`。
+- 更新 `ai-task/TASK_STATE.md`。
 - 准备好进入检视阶段。
 
 [执行步骤]

@@ -14,7 +14,7 @@ description: 基于设计输出 PlantUML 图示。
 
 [退出条件]
 - 已生成/更新合法的 `.puml` 源码。
-- 更新 `TASK_STATE.md`。
+- 更新 `ai-task/TASK_STATE.md`。
 
 [执行步骤]
 1. 读取 `推荐图示清单`。
